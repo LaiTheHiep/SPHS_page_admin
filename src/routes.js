@@ -18,8 +18,8 @@ const routes = [
   { path: '/role', name: 'Role', component: Role },
   { path: '/transaction', name: 'Transaction', component: Transaction },
   { path: '/user', name: 'User', component: User },
-  { path: '/vehicle-type', name: 'VehicleType', component: VehicleType },
-  { path: '/parking-ticket', name: 'ParkingTicket', component: ParkingTicket },
+  { path: '/vehicle-type', name: 'Vehicle Type', component: VehicleType },
+  { path: '/parking-ticket', name: 'Parking Ticket', component: ParkingTicket },
 ];
 
 export default routes;
