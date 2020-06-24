@@ -82,7 +82,7 @@ class Role extends React.Component {
     this.setState({});
   }
 
-  toggle(event) {
+  toggle() {
     this.state.isOpen = false;
     this.state.typeSubmit = 0;
     this.state.valueTemp = {};
