@@ -1,0 +1,42 @@
+.SingleDatePicker_picker{
+  z-index: 999998;
+}
+.SingleDatePicker_closeButton{
+  z-index: 999999;
+}
+.DayPickerKeyboardShortcuts_show{
+  z-index: 999999;
+}
+.DayPickerKeyboardShortcuts_panel{
+  z-index: 999999;
+}
+.DayPickerKeyboardShortcuts_close{
+  z-index: 999999;
+}
+.CalendarMonthGrid{
+  z-index: 999997;
+}
+.CalendarMonthGrid__animating{
+  z-index: 999998;
+}
+.CalendarMonthGrid_month__hideForAnimation{
+  z-index: 999996;
+}
+.CalendarMonthGrid_month__hidden{
+  z-index: 999999;
+}
+.DayPickerNavigation{
+  z-index: 999999;
+}
+.DayPicker_weekHeader{
+  z-index: 999999;
+}
+.DateInput_fang{
+  z-index: 999999;
+}
+.DateRangePicker_picker{
+  z-index: 999998;
+}
+.DateRangePicker_closeButton{
+  z-index: 999998;
+}
