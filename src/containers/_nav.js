@@ -9,5 +9,10 @@ export default [
       text: 'NEW',
     }
   },
+  {
+    name: 'Role',
+    to: '/role',
+    icon: 'cil-speedometer',
+  }
 ]
 
