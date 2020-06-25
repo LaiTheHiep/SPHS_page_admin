@@ -13,7 +13,7 @@ export const ADDRESS_BASE_API = 'http://localhost:8080';
 export const ROLES = {
   admin: 'admin',
   manager: 'manager',
-  employee: 'employee',
+  security: 'security',
   user: 'user'
 };
 export const VEHICLETYPES = {
