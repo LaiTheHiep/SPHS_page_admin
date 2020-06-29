@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -13,8 +12,10 @@ import {
   CInputGroupPrepend,
   CInputGroupText,
   CRow
-} from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+} from '@coreui/react';
+import CIcon from '@coreui/icons-react';
+import BaseAction from '../actions/BaseAction';
+import Utils from '../Utils';
 
 const Login = () => {
   return (
@@ -34,7 +35,7 @@ const Login = () => {
                           <CIcon name="cil-user" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="text" placeholder="Username" autoComplete="username" />
+                      <CInput type="text" placeholder="Username" id="username" autoComplete="username" />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupPrepend>
@@ -42,11 +43,19 @@ const Login = () => {
                           <CIcon name="cil-lock-locked" />
                         </CInputGroupText>
                       </CInputGroupPrepend>
-                      <CInput type="password" placeholder="Password" autoComplete="current-password" />
+                      <CInput type="password" placeholder="Password" id="password" autoComplete="current-password" />
                     </CInputGroup>
                     <CRow>
                       <CCol xs="6">
-                        <CButton color="primary" className="px-4">Login</CButton>
+                        <CButton color="primary" className="px-4" onClick={() => {
+                          BaseAction.authentication(document.getElementById('username').value, document.getElementById('password').value)
+                            .then((res) => {
+                              if (res.data.data) {
+                                Utils.setCookie(res.data.data);
+                                window.location.reload();
+                              }
+                            })
+                        }}>Login</CButton>
                       </CCol>
                       <CCol xs="6" className="text-right">
                         <CButton color="link" className="px-0">Forgot password?</CButton>

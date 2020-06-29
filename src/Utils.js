@@ -33,9 +33,9 @@ var Utils = {
 
     return array;
   },
-  convertLink(_collection, _query){
+  convertLink(_collection, _query) {
     var _link = `${ADDRESS_BASE_API}/${_collection}?accessToken=${ACCESS_TOKEN}`;
-    if(_query){
+    if (_query) {
       Object.keys(_query).forEach((e, i) => {
         _link += `&${e}=${_query[e]}`;
       })
@@ -43,6 +43,17 @@ var Utils = {
 
     return _link;
   },
+  setCookie(_user) {
+    Object.keys(_user).forEach((e, i) => {
+      localStorage.setItem(e, _user[e]);
+    })
+  },
+  clearCookie() {
+    localStorage.clear();
+  },
+  getItemCookie(_item) {
+    return localStorage.getItem(_item);
+  }
 }
 
 export default Utils;
