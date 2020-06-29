@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Utils from '../Utils';
-import { ADDRESS_BASE_API } from '../parameters/const_env';
+import { ADDRESS_BASE_API, LINK_SPECIALS } from '../parameters/const_env';
 
 var BaseAction = {
   get(_collection, _query) {
@@ -20,7 +20,7 @@ var BaseAction = {
     return axios.delete(_link);
   },
   authentication(_username, _password) {
-    return axios.post(`${ADDRESS_BASE_API}/authentication`, {
+    return axios.post(`${ADDRESS_BASE_API}/${LINK_SPECIALS.authentication}`, {
       account: _username,
       password: _password
     });

@@ -1,7 +1,7 @@
 import XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import moment from 'moment';
-import { ACCESS_TOKEN, ADDRESS_BASE_API } from './parameters/const_env';
+import { ADDRESS_BASE_API } from './parameters/const_env';
 
 var Utils = {
   downloadTemplate(data) {
@@ -34,7 +34,13 @@ var Utils = {
     return array;
   },
   convertLink(_collection, _query) {
-    var _link = `${ADDRESS_BASE_API}/${_collection}?accessToken=${ACCESS_TOKEN}`;
+    if (!localStorage.accessToken) {
+      alert('Session expired');
+      this.clearCookie();
+      window.location.reload();
+      return;
+    }
+    var _link = `${ADDRESS_BASE_API}/${_collection}?accessToken=${localStorage.accessToken}`;
     if (_query) {
       Object.keys(_query).forEach((e, i) => {
         _link += `&${e}=${_query[e]}`;
