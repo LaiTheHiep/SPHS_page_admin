@@ -2,6 +2,7 @@
 import React from 'react';
 import Table from '../components/Table';
 import { Row, Col, Button, Label, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import CIcon from '@coreui/icons-react';
 import BaseAction from '../actions/BaseAction';
 import { db_collection } from '../parameters/const_env';
 
@@ -171,11 +172,11 @@ class VehicleType extends React.Component {
       {
         Header: 'Option',
         id: 'option',
-        width: 130,
+        width: 100,
         Cell: (row) => {
           return <div>
-            <Button color='link' onClick={() => this.toggleEdit(row.original)}>Edit</Button>
-            <Button color='link' onClick={() => this.delete(row.original._id)}>Delete</Button>
+            <Button color='link' onClick={() => this.toggleEdit(row.original)}><CIcon name="cil-pencil" /></Button>
+            <Button color='link' onClick={() => this.delete(row.original._id)}><CIcon name="cil-trash" /></Button>
           </div>
         }
       }
