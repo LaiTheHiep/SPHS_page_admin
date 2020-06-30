@@ -24,6 +24,14 @@ var BaseAction = {
       account: _username,
       password: _password
     });
+  },
+  loginFacebook(_obj) {
+    return axios.post(`${ADDRESS_BASE_API}/${LINK_SPECIALS.loginFacebook}`, {
+      name: _obj.name,
+      email: _obj.email,
+      facebookId: _obj.userID,
+      facebook: { ..._obj }
+    })
   }
 }
 

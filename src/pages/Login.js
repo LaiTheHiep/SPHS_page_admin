@@ -14,8 +14,10 @@ import {
   CRow
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
+import FacebookLogin from 'react-facebook-login';
 import BaseAction from '../actions/BaseAction';
 import Utils from '../Utils';
+import { FACEBOOK_ID } from '../parameters/const_env';
 
 const Login = () => {
   return (
@@ -55,7 +57,24 @@ const Login = () => {
                                 window.location.reload();
                               }
                             })
-                        }}>Login</CButton>
+                        }}>Login</CButton>{' '}
+                        {/* </CCol>
+                      <CCol xs="3"> */}
+                        <FacebookLogin
+                          appId={FACEBOOK_ID}
+                          fields="name,email,picture"
+                          textButton=" Login with Facebook"
+                          cssClass="px-4 btn btn-primary"
+                          icon={<CIcon name="cib-facebook" />}
+                          callback={(facebook) => {
+                            BaseAction.loginFacebook(facebook).then((res) => {
+                              if (res.data.data) {
+                                Utils.setCookie(res.data.data);
+                                window.location.reload();
+                              }
+                            });
+                          }}
+                        />
                       </CCol>
                       <CCol xs="6" className="text-right">
                         <CButton color="link" className="px-0">Forgot password?</CButton>

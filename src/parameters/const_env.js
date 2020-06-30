@@ -8,6 +8,7 @@ export const db_collection = {
 };
 export const LINK_SPECIALS = {
   authentication: 'authentication',
+  loginFacebook: 'login-facebook'
 };
 export const ADDRESS_BASE_API = 'http://localhost:8080';
 export const FACEBOOK_ID = '263009894987089';
