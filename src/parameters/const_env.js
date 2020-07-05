@@ -10,7 +10,8 @@ export const LINK_SPECIALS = {
   authentication: 'authentication',
   loginFacebook: 'login-facebook'
 };
-export const ADDRESS_BASE_API = 'http://localhost:8080';
+// export const ADDRESS_BASE_API = 'http://localhost:8080';
+export const ADDRESS_BASE_API = 'https://sphs-lth.herokuapp.com';
 export const FACEBOOK_ID = '263009894987089';
 export const ROLES = {
   admin: 'admin',
