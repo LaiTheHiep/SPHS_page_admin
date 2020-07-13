@@ -11,17 +11,22 @@ import {
 } from '@coreui/react';
 import CIcon from '@coreui/icons-react';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Row, Col, Label, Input } from 'reactstrap';
+import ReactSelect from 'react-select';
 import Utils from '../Utils';
 import BaseAction from '../actions/BaseAction';
-import { db_collection } from '../parameters/const_env';
+import { db_collection, VEHICLETYPES, SELECT_PARAMETERS } from '../parameters/const_env';
 
 class TheHeaderDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isUpdate: false,
-      user: {}
+      user: {},
+      companies: [],
+
     }
+
+    this.getCompany({});
 
     this.toggleUpdate = this.toggleUpdate.bind(this);
     this.changeText = this.changeText.bind(this);
@@ -31,6 +36,20 @@ class TheHeaderDropdown extends React.Component {
     this.state.isUpdate = !this.state.isUpdate;
     this.state.user = {};
     this.setState({});
+  }
+
+  getCompany(_query) {
+    BaseAction.get(db_collection.companies, { $skip: SELECT_PARAMETERS.skip, $limit: SELECT_PARAMETERS.limit, ..._query }).then((res) => {
+      this.state.companies = [];
+      res.data.data.forEach((e, i) => {
+        this.state.companies.push({
+          value: e._id,
+          label: e.name,
+          _id: e._id
+        });
+        this.setState({});
+      });
+    });
   }
 
   changeText(event) {
@@ -182,12 +201,33 @@ class TheHeaderDropdown extends React.Component {
               <tr>
                 <td>Vehicle Type</td>
                 <td>
-                  <Input name='vehicleType' value={this.state.user.vehicleType} autoComplete='off' onChange={this.changeText} />
+                  <Input type='select' name='vehicleType' value={this.state.user.vehicleType} onChange={this.changeText} >
+                    {
+                      Object.keys(VEHICLETYPES).map((e, i) => <option key={e}>{e}</option>)
+                    }
+                  </Input>
+                  {/* <Input name='vehicleType' value={this.state.user.vehicleType} autoComplete='off' onChange={this.changeText} /> */}
                 </td>
                 <td>&ensp;</td>
                 <td>Description</td>
                 <td>
                   <Input type='textarea' name='description' value={this.state.user.description} autoComplete='off' onChange={this.changeText} />
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                  <ReactSelect
+                    options={this.state.companies}
+                    onInputChange={(value) => {
+                      setTimeout(() => {
+                        this.getCompany({ $regex: JSON.stringify([{ "name": "name", "value": `.*${value}.*`, "$options": "$i" }]) });
+                      }, 500);
+                    }}
+                    onChange={(value) => {
+                      this.state.user.companyId = value.value; // _id
+                    }}
+                  />
                 </td>
               </tr>
             </table>

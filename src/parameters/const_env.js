@@ -23,3 +23,8 @@ export const VEHICLETYPES = {
   car: 'car',
   motorbike: 'motorbike'
 };
+
+export const SELECT_PARAMETERS = {
+  skip: 0,
+  limit: 5
+}
