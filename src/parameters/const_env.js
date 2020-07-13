@@ -28,3 +28,5 @@ export const SELECT_PARAMETERS = {
   skip: 0,
   limit: 5
 }
+
+export const EXPIRY_TOKEN = 86400000;

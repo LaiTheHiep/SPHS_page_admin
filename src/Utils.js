@@ -1,7 +1,7 @@
 import XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import moment from 'moment';
-import { ADDRESS_BASE_API } from './parameters/const_env';
+import { ADDRESS_BASE_API, EXPIRY_TOKEN } from './parameters/const_env';
 
 var Utils = {
   downloadTemplate(data) {
@@ -52,13 +52,23 @@ var Utils = {
   setCookie(_user) {
     Object.keys(_user).forEach((e, i) => {
       localStorage.setItem(e, _user[e]);
-    })
+    });
+    // create time login
+    localStorage.setItem('timeSession', Date.now()); // milliseconds
   },
   clearCookie() {
     localStorage.clear();
   },
   getItemCookie(_item) {
     return localStorage.getItem(_item);
+  },
+  checkSession() {
+    let _now = new Date();
+    if (_now.getTime() - this.getItemCookie('timeSession') > EXPIRY_TOKEN) {
+      alert('Session expired! You must login to use service');
+      this.clearCookie();
+      window.location.reload();
+    }
   }
 }
 
