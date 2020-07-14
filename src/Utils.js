@@ -69,6 +69,17 @@ var Utils = {
       this.clearCookie();
       window.location.reload();
     }
+  },
+  getPage(_total, _pageSize) {
+    let _pages = 0;
+    if (_total % _pageSize) {
+      _pages = Math.floor(_total / _pageSize);
+      _pages += 1;
+    } else {
+      _pages = _total / _pageSize;
+    }
+
+    return _pages;
   }
 }
 

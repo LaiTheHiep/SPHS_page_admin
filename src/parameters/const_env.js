@@ -26,7 +26,8 @@ export const VEHICLETYPES = {
 
 export const SELECT_PARAMETERS = {
   skip: 0,
-  limit: 5
+  limit: 5,
+  page: 10
 }
 
 export const EXPIRY_TOKEN = 86400000;
