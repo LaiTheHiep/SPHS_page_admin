@@ -6,16 +6,16 @@ import './table.css';
 export default function Table({ refs, ...rest }) {
   return (
     <ReactTable
-      previousText="Trang trước"
-      nextText="Trang tiếp theo"
-      loadingText="Đang tải dữ liệu..."
-      noDataText="Không có dữ liệu nào được tìm thấy"
-      pageText="Trang"
-      ofText="của"
-      rowsText="Hàng"
+      previousText="Previous Page"
+      nextText="Next Page"
+      loadingText="Loading..."
+      noDataText="Data empty"
+      pageText="Page"
+      ofText="of"
+      rowsText="rows"
       // Accessibility Labels
-      pageJumpText="Nhảy tới trang"
-      rowsSelectorText="Số hàng mỗi trang"
+      pageJumpText="Jump to page"
+      rowsSelectorText="Rows in line"
       //Genera
       pageSizeOptions={[25, 50, 100, 200]}
       defaultPageSize={25}
