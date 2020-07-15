@@ -8,6 +8,11 @@ var BaseAction = {
     let _link = Utils.convertLink(_collection, _query);
     return axios.get(_link);
   },
+  getTotal(_collection, _query) {
+    Utils.checkSession();
+    let _link = Utils.convertLink(`${_collection}-total`, _query);
+    return axios.get(_link);
+  },
   post(_collection, _body) {
     Utils.checkSession();
     let _link = Utils.convertLink(_collection, undefined);
