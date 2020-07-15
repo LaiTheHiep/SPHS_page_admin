@@ -24,7 +24,7 @@ class ParkingTicket extends React.Component {
       parkingTickets: []
     };
 
-    // this.getCompanies({});
+    this.getCompanies({});
   }
 
   getTotal(_query) {
