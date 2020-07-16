@@ -64,15 +64,24 @@ class ParkingTicket extends React.Component {
 
   getParkingTickets(userId) {
     BaseAction.get(db_collection.packingTickets, { userId: userId }).then((res) => {
-      // let _users_arr = [];
-      // res.data.data.forEach((e, i) => {
-      //   let _user_temp = _users_arr.find(_e => _e === e.author);
-      //   if (!_user_temp) {
-      //     _users_arr.push(e.author);
-      //   }
-      // });
-      this.state.parkingTickets = res.data.data;
-      this.setState({});
+      let _users_arr = [];
+      res.data.data.forEach((e, i) => {
+        let _user_temp = _users_arr.find(_e => _e === e.author);
+        if (!_user_temp) {
+          _users_arr.push(e.author);
+        }
+      });
+      BaseAction.get(db_collection.users, { "$in": JSON.stringify({ name: '_id', value: _users_arr }) }).then((resUsers) => {
+        res.data.data.forEach((e, i) => {
+          let _user_temp = resUsers.data.data.find(_e => _e._id === e.author);
+          if (_user_temp) {
+            this.state.parkingTickets.push({ ...e, security: _user_temp.name });
+          } else {
+            this.state.parkingTickets.push(e);
+          }
+        });
+        this.setState({});
+      });
     });
   }
 
@@ -163,7 +172,7 @@ class ParkingTicket extends React.Component {
                   <CardBody>
                     <Row>
                       <Col sm='2'><b>Port: </b>{e.port}</Col>
-                      <Col sm='5'><b>Security: </b>{e.author}</Col>
+                      <Col sm='5'><b>Security: </b>{e.security}</Col>
                       <Col sm='5'><b>Description: </b>{e.description}</Col>
                     </Row>
                     <br />

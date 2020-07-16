@@ -215,7 +215,7 @@ class TheHeaderDropdown extends React.Component {
                 </td>
               </tr>
               <tr>
-                <td></td>
+                <td>Company</td>
                 <td>
                   <ReactSelect
                     options={this.state.companies}
