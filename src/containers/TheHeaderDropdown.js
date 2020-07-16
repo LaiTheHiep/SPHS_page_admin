@@ -158,7 +158,18 @@ class TheHeaderDropdown extends React.Component {
                 <td>&ensp;</td>
                 <td>Company</td>
                 <td>
-                  <Input name='companyId' value={this.state.user.companyId} autoComplete=' off' onChange={this.changeText} />
+                  <ReactSelect
+                    options={this.state.companies}
+                    onInputChange={(value) => {
+                      setTimeout(() => {
+                        this.getCompany({ $regex: JSON.stringify([{ "name": "name", "value": `.*${value}.*`, "$options": "$i" }]) });
+                      }, 500);
+                    }}
+                    onChange={(value) => {
+                      this.state.user.companyId = value.value; // _id
+                    }}
+                  />
+                  <p>{this.state.user.companyId}</p>
                 </td>
               </tr>
               <br />
@@ -212,22 +223,6 @@ class TheHeaderDropdown extends React.Component {
                 <td>Description</td>
                 <td>
                   <Input type='textarea' name='description' value={this.state.user.description} autoComplete='off' onChange={this.changeText} />
-                </td>
-              </tr>
-              <tr>
-                <td>Company</td>
-                <td>
-                  <ReactSelect
-                    options={this.state.companies}
-                    onInputChange={(value) => {
-                      setTimeout(() => {
-                        this.getCompany({ $regex: JSON.stringify([{ "name": "name", "value": `.*${value}.*`, "$options": "$i" }]) });
-                      }, 500);
-                    }}
-                    onChange={(value) => {
-                      this.state.user.companyId = value.value; // _id
-                    }}
-                  />
                 </td>
               </tr>
             </table>

@@ -2,9 +2,9 @@
 import React from 'react';
 import Table from '../components/Table';
 import TextFilterer from '../components/Table/Filterer/TextFilterer';
-import { Row, Col, Button, Label, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Row, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import CIcon from '@coreui/icons-react';
-import { SELECT_PARAMETERS, db_collection } from '../parameters/const_env';
+import { db_collection } from '../parameters/const_env';
 import BaseAction from '../actions/BaseAction';
 import Utils from '../Utils';
 
@@ -107,6 +107,7 @@ class Company extends React.Component {
       alert('Something wrong!');
     }
   }
+
   submit() {
     var conf = window.confirm('Are you sure?');
     if (!conf)
