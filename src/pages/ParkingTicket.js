@@ -64,6 +64,13 @@ class ParkingTicket extends React.Component {
 
   getParkingTickets(userId) {
     BaseAction.get(db_collection.packingTickets, { userId: userId }).then((res) => {
+      // let _users_arr = [];
+      // res.data.data.forEach((e, i) => {
+      //   let _user_temp = _users_arr.find(_e => _e === e.author);
+      //   if (!_user_temp) {
+      //     _users_arr.push(e.author);
+      //   }
+      // });
       this.state.parkingTickets = res.data.data;
       this.setState({});
     });
@@ -92,7 +99,6 @@ class ParkingTicket extends React.Component {
 
     return (
       <div>
-        {/* <Button onClick={() => console.log(this.state)}>Test state</Button> */}
         <Row>
           <Label sm='2'>Select Company filter: </Label>
           <Col sm='4'>
@@ -157,9 +163,10 @@ class ParkingTicket extends React.Component {
                   <CardBody>
                     <Row>
                       <Col sm='2'><b>Port: </b>{e.port}</Col>
-                      <Col sm='4'><b>Security: </b>{e.userId}</Col>
-                      <Col sm='6'><b>Description: </b>{e.description}</Col>
+                      <Col sm='5'><b>Security: </b>{e.author}</Col>
+                      <Col sm='5'><b>Description: </b>{e.description}</Col>
                     </Row>
+                    <br />
                     <Row className='text-center'>
                       <Col sm='6'>
                         <img
