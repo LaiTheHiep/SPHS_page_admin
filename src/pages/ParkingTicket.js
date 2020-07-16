@@ -63,6 +63,7 @@ class ParkingTicket extends React.Component {
   }
 
   getParkingTickets(userId) {
+    this.state.parkingTickets = [];
     BaseAction.get(db_collection.packingTickets, { userId: userId }).then((res) => {
       let _users_arr = [];
       res.data.data.forEach((e, i) => {
