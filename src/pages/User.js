@@ -2,7 +2,7 @@
 import React from 'react';
 import Table from '../components/Table';
 import TextFilterer from '../components/Table/Filterer/TextFilterer';
-import { Row, Col, Button, Label, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Row, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import CIcon from '@coreui/icons-react';
 import ReactSelect from 'react-select';
 import { VEHICLETYPES, ROLES, SELECT_PARAMETERS, db_collection } from '../parameters/const_env';
@@ -275,7 +275,7 @@ class User extends React.Component {
     return (
       <div>
         <Row>
-          <Button color='success' onClick={this.toggleCreate}>+ Create new company</Button>
+          <Button color='success' onClick={this.toggleCreate}>+ Create new user</Button>
         </Row>
         <br />
         <Row>
