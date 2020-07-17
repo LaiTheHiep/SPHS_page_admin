@@ -21,6 +21,8 @@ class TheHeaderDropdown extends React.Component {
     super(props);
     this.state = {
       isUpdate: false,
+      isShowInformation: false,
+      isRecharge: false,
       user: {},
       companies: [],
 
@@ -29,12 +31,25 @@ class TheHeaderDropdown extends React.Component {
     this.getCompany({});
 
     this.toggleUpdate = this.toggleUpdate.bind(this);
+    this.toggleShowInformation = this.toggleShowInformation.bind(this);
+    this.toggleRecharge = this.toggleRecharge.bind(this);
     this.changeText = this.changeText.bind(this);
   }
 
   toggleUpdate() {
     this.state.isUpdate = !this.state.isUpdate;
     this.state.user = {};
+    this.setState({});
+  }
+
+  toggleShowInformation() {
+    this.state.isShowInformation = !this.state.isShowInformation;
+    this.state.user = {};
+    this.setState({});
+  }
+
+  toggleRecharge() {
+    this.state.isRecharge = !this.state.isRecharge;
     this.setState({});
   }
 
@@ -93,6 +108,23 @@ class TheHeaderDropdown extends React.Component {
     this.setState({});
   }
 
+  getCookie() {
+    this.state.user._id = Utils.getItemCookie('_id');
+    this.state.user.account = Utils.getItemCookie('account');
+    this.state.user.password = Utils.getItemCookie('password');
+    this.state.user.name = Utils.getItemCookie('name');
+    this.state.user.companyId = Utils.getItemCookie('companyId');
+    this.state.user.cmt = Utils.getItemCookie('cmt');
+    this.state.user.phone = Utils.getItemCookie('phone');
+    this.state.user.email = Utils.getItemCookie('email');
+    this.state.user.numberPlate = Utils.getItemCookie('numberPlate');
+    this.state.user.vehicleColor = Utils.getItemCookie('vehicleColor');
+    this.state.user.vehicleBranch = Utils.getItemCookie('vehicleBranch');
+    this.state.user.vehicleType = Utils.getItemCookie('vehicleType');
+    this.state.user.description = Utils.getItemCookie('description');
+    this.setState({});
+  }
+
   render() {
     return (
       <CDropdown
@@ -107,24 +139,23 @@ class TheHeaderDropdown extends React.Component {
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
           <CDropdownItem onClick={() => {
-            this.state.user._id = Utils.getItemCookie('_id');
-            this.state.user.account = Utils.getItemCookie('account');
-            this.state.user.password = Utils.getItemCookie('password');
-            this.state.user.name = Utils.getItemCookie('name');
-            this.state.user.companyId = Utils.getItemCookie('companyId');
-            this.state.user.cmt = Utils.getItemCookie('cmt');
-            this.state.user.phone = Utils.getItemCookie('phone');
-            this.state.user.email = Utils.getItemCookie('email');
-            this.state.user.numberPlate = Utils.getItemCookie('numberPlate');
-            this.state.user.vehicleColor = Utils.getItemCookie('vehicleColor');
-            this.state.user.vehicleBranch = Utils.getItemCookie('vehicleBranch');
-            this.state.user.vehicleType = Utils.getItemCookie('vehicleType');
-            this.state.user.description = Utils.getItemCookie('description');
+            this.state.isShowInformation = !this.state.isShowInformation;
+            this.state.user.balance = Utils.getItemCookie('balance');
+            this.getCookie();
+          }}>
+            <CIcon name="cil-bookmark" className="mfe-2" />
+            Information
+          </CDropdownItem>
+          <CDropdownItem onClick={() => {
             this.state.isUpdate = !this.state.isUpdate;
-            this.setState({});
+            this.getCookie();
           }}>
             <CIcon name="cil-user" className="mfe-2" />
           Update Profile
+        </CDropdownItem>
+          <CDropdownItem onClick={this.toggleRecharge}>
+            <CIcon name="cil-cursor" className="mfe-2" />
+            Recharge
         </CDropdownItem>
           <CDropdownItem onClick={() => {
             Utils.clearCookie();
@@ -245,6 +276,45 @@ class TheHeaderDropdown extends React.Component {
             }}>Submit</Button>
             <Button color='secondary' onClick={this.toggleUpdate}>Cancel</Button>
           </ModalFooter>
+        </Modal>
+        <Modal isOpen={this.state.isShowInformation} toggle={this.toggleShowInformation}>
+          <ModalHeader toggle={this.toggleShowInformation}>User Profile</ModalHeader>
+          <ModalBody>
+            <table style={{ width: '100%' }}>
+              {
+                Object.keys(this.state.user).map((e, i) => {
+                  if (e !== 'password')
+                    return <tr key={i}>
+                      <td><b>{e}</b></td>
+                      <td>: {this.state.user[e]}</td>
+                    </tr>
+                })
+              }
+            </table>
+          </ModalBody>
+        </Modal>
+        <Modal isOpen={this.state.isRecharge} toggle={this.toggleRecharge}>
+          <ModalHeader toggle={this.toggleRecharge}>Recharge</ModalHeader>
+          <ModalBody>
+            <table style={{ width: '100%' }}>
+              <tr>
+                <td><b>Number account</b></td>
+                <td>: 105002222444</td>
+              </tr>
+              <tr>
+                <td><b>Account</b></td>
+                <td>: LAI THE HIEP</td>
+              </tr>
+              <tr>
+                <td><b>Bank</b></td>
+                <td>: VietinBank</td>
+              </tr>
+              <tr>
+                <td><b>Content</b></td>
+                <td>: [Number Plate]</td>
+              </tr>
+            </table>
+          </ModalBody>
         </Modal>
       </CDropdown>
     );
