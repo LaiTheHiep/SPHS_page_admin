@@ -67,7 +67,8 @@ var Utils = {
     if (_now.getTime() - this.getItemCookie('timeSession') > EXPIRY_TOKEN) {
       alert('Session expired! You must login to use service');
       this.clearCookie();
-      window.location.reload();
+      this.resetLink('login');
+      // window.location.reload();
     }
   },
   getPage(_total, _pageSize) {
@@ -85,11 +86,12 @@ var Utils = {
     let d = new Date(_date);
     return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')} ${d.toLocaleTimeString()}`
   },
-  resetLink() {
+  resetLink(_link) {
+    let _replaceLink = _link ? _link : '';
     let _href = window.location.href;
     let _arr = _href.split('/');
     if (_arr && _arr.length) {
-      window.location.href = _href.substring(0, _href.indexOf(_arr[_arr.length - 1]));
+      window.location.href = _href.substring(0, _href.indexOf(_arr[_arr.length - 1])) + _replaceLink;
       // window.location.reload();
     }
   }
