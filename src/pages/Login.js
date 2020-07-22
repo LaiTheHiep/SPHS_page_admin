@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   CButton,
   CCard,
@@ -60,10 +61,18 @@ const Login = () => {
                         }}>Login</CButton>{' '}
                         {/* </CCol>
                       <CCol xs="3"> */}
+                      </CCol>
+                      <CCol xs="6" className="text-right">
+                        <CButton color="link" className="px-0">Forgot password?</CButton>
+                      </CCol>
+                    </CRow>
+                    <hr />
+                    <CRow>
+                      <CCol xs="6">
                         <FacebookLogin
                           appId={FACEBOOK_ID}
                           fields="name,email,picture"
-                          textButton=" Login with Facebook"
+                          textButton="Facebook"
                           cssClass="px-4 btn btn-primary"
                           icon={<CIcon name="cib-facebook" />}
                           callback={(facebook) => {
@@ -76,11 +85,19 @@ const Login = () => {
                           }}
                         />
                       </CCol>
-                      <CCol xs="6" className="text-right">
-                        <CButton color="link" className="px-0">Forgot password?</CButton>
-                      </CCol>
                     </CRow>
                   </CForm>
+                </CCardBody>
+              </CCard>
+              <CCard className="text-white bg-primary py-5 d-md-down-none" style={{ width: '44%' }}>
+                <CCardBody className="text-center">
+                  <div>
+                    <h2>Sign up</h2>
+                    <p>If you do not have an account, you can register an account directly here. Please enter button '<b>Register Now!</b>'</p>
+                    <Link to="/register">
+                      <CButton color="primary" className="mt-3" active tabIndex={-1}>Register Now!</CButton>
+                    </Link>
+                  </div>
                 </CCardBody>
               </CCard>
             </CCardGroup>

@@ -84,6 +84,14 @@ var Utils = {
   convertTime(_date) {
     let d = new Date(_date);
     return `${d.getFullYear()}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getDate().toString().padStart(2, '0')} ${d.toLocaleTimeString()}`
+  },
+  resetLink() {
+    let _href = window.location.href;
+    let _arr = _href.split('/');
+    if (_arr && _arr.length) {
+      window.location.href = _href.substring(0, _href.indexOf(_arr[_arr.length - 1]));
+      // window.location.reload();
+    }
   }
 }
 

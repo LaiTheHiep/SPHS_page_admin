@@ -34,6 +34,9 @@ var BaseAction = {
       password: _password
     });
   },
+  register(_user) {
+    return axios.post(`${ADDRESS_BASE_API}/${LINK_SPECIALS.register}`, { ..._user });
+  },
   loginFacebook(_obj) {
     return axios.post(`${ADDRESS_BASE_API}/${LINK_SPECIALS.loginFacebook}`, {
       name: _obj.name,

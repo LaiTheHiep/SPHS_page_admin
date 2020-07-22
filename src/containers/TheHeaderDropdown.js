@@ -282,6 +282,7 @@ class TheHeaderDropdown extends React.Component {
           <ModalBody>
             <table style={{ width: '100%' }}>
               {
+                // eslint-disable-next-line array-callback-return
                 Object.keys(this.state.user).map((e, i) => {
                   if (e !== 'password')
                     return <tr key={i}>
