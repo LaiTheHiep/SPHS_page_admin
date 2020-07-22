@@ -7,8 +7,9 @@ import {
 import { CContainer, CFade } from '@coreui/react'
 
 // routes config
-import routes from '../routes'
-  
+import routes from '../routes';
+import Utils from '../Utils';
+
 const loading = (
   <div className="pt-3 text-center">
     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -21,7 +22,7 @@ const TheContent = () => {
       <CContainer fluid>
         <Suspense fallback={loading}>
           <Switch>
-            {routes.map((route, idx) => {
+            {routes.filter(e => !e.block.find(_e => _e === Utils.getItemCookie('role'))).map((route, idx) => {
               return route.component && (
                 <Route
                   key={idx}

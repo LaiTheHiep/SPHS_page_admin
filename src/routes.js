@@ -11,15 +11,15 @@ const ParkingTicket = React.lazy(() => import('./pages/ParkingTicket'));
 
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
-  { path: '/dashboard', name: 'Dashboard', component: Dashboard },
-  { path: '/login', name: 'Login', component: Login },
-  { path: '/company', name: 'Company', component: Company },
-  { path: '/role', name: 'Role', component: Role },
-  { path: '/transaction', name: 'Transaction', component: Transaction },
-  { path: '/user', name: 'User', component: User },
-  { path: '/vehicle-type', name: 'Vehicle Type', component: VehicleType },
-  { path: '/parking-ticket', name: 'Parking Ticket', component: ParkingTicket },
+  { path: '/', exact: true, name: 'Home', block: [] },
+  { path: '/dashboard', name: 'Dashboard', component: Dashboard, block: [] },
+  { path: '/login', name: 'Login', component: Login, block: [] },
+  { path: '/company', name: 'Company', component: Company, block: ['manage', 'user'] },
+  { path: '/role', name: 'Role', component: Role, block: ['security', 'manage', 'user'] },
+  { path: '/transaction', name: 'Transaction', component: Transaction, block: [] },
+  { path: '/user', name: 'User', component: User, block: ['user'] },
+  { path: '/vehicle-type', name: 'Vehicle Type', component: VehicleType, block: ['security', 'manage', 'user'] },
+  { path: '/parking-ticket', name: 'Parking Ticket', component: ParkingTicket, block: [] },
 ];
 
 export default routes;
