@@ -60,6 +60,8 @@ class User extends React.Component {
   }
 
   get(_query) {
+    if (Utils.getItemCookie('role') === ROLES.manager)
+      _query.companyId = Utils.getItemCookie('companyId');
     BaseAction.get(db_collection.users, { ..._query, ...this.state.filteredRegex })
       .then((res) => {
         if (res.data.errorMessage) {

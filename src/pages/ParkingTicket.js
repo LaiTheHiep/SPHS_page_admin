@@ -5,7 +5,7 @@ import { Col, Row, Label, Button, Card, CardBody } from 'reactstrap';
 import Table from '../components/Table';
 import TextFilterer from '../components/Table/Filterer/TextFilterer';
 import ReactSelect from 'react-select';
-import { SELECT_PARAMETERS, db_collection } from '../parameters/const_env';
+import { SELECT_PARAMETERS, db_collection, ROLES } from '../parameters/const_env';
 import BaseAction from '../actions/BaseAction';
 import Utils from '../Utils';
 
@@ -24,7 +24,10 @@ class ParkingTicket extends React.Component {
       parkingTickets: []
     };
 
-    this.getCompanies({});
+    if (Utils.getItemCookie('role') === ROLES.manager)
+      this.getUsers({});
+    else
+      this.getCompanies({});
   }
 
   getTotal(_query) {
@@ -52,6 +55,8 @@ class ParkingTicket extends React.Component {
   }
 
   getUsers(_query) {
+    if (Utils.getItemCookie('role') === ROLES.manager)
+      _query.companyId = Utils.getItemCookie('companyId');
     BaseAction.get(db_collection.users, { ..._query, ...this.state.filteredRegex }).then((res) => {
       this.state.users = [];
       if (res.data.data) {
@@ -109,36 +114,39 @@ class ParkingTicket extends React.Component {
 
     return (
       <div>
-        <Row>
-          <Label sm='2'>Select Company filter: </Label>
-          <Col sm='4'>
-            <ReactSelect
-              options={this.state.companies}
-              onInputChange={(value) => {
-                setTimeout(() => {
-                  this.getCompanies({ $regex: JSON.stringify([{ "name": "name", "value": `.*${value}.*`, "$options": "$i" }]) });
-                }, 500);
-              }}
-              onChange={(value) => {
-                this.state.company = value;
-              }}
-            />
-          </Col>
-          <Col>
-            <Button
-              color='success'
-              onClick={() => {
-                if (this.state.company.value) {
-                  this.getUsers({ companyId: this.state.company.value, $limit: this.state.pageSize });
-                } else {
-                  alert('You must choose company!');
-                }
-              }}>
-              Search
+        {
+          Utils.getItemCookie('role') !== ROLES.manager &&
+          <Row>
+            <Label sm='2'>Select Company filter: </Label>
+            <Col sm='4'>
+              <ReactSelect
+                options={this.state.companies}
+                onInputChange={(value) => {
+                  setTimeout(() => {
+                    this.getCompanies({ $regex: JSON.stringify([{ "name": "name", "value": `.*${value}.*`, "$options": "$i" }]) });
+                  }, 500);
+                }}
+                onChange={(value) => {
+                  this.state.company = value;
+                }}
+              />
+            </Col>
+            <Col>
+              <Button
+                color='success'
+                onClick={() => {
+                  if (this.state.company.value) {
+                    this.getUsers({ companyId: this.state.company.value, $limit: this.state.pageSize });
+                  } else {
+                    alert('You must choose company!');
+                  }
+                }}>
+                Search
             </Button>
-          </Col>
-        </Row>
-        <hr />
+            </Col>
+          </Row>
+        }
+        {Utils.getItemCookie('role') !== ROLES.manager && <hr />}
         <Row>
           <Col sm='3'>
             <Table
