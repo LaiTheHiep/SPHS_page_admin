@@ -2,7 +2,7 @@
 import React from 'react';
 import { Col, Row, Label, Card, CardBody, ListGroup, ListGroupItem } from 'reactstrap';
 import ReactSelect from 'react-select';
-import { SELECT_PARAMETERS, db_collection } from '../parameters/const_env';
+import { SELECT_PARAMETERS, db_collection, ROLES } from '../parameters/const_env';
 import BaseAction from '../actions/BaseAction';
 import Utils from '../Utils';
 
@@ -16,6 +16,7 @@ class Transaction extends React.Component {
     };
 
     this.getUsers({});
+    this.getUser(Utils.getItemCookie('_id'));
   }
 
   getUsers(_query) {
@@ -50,23 +51,26 @@ class Transaction extends React.Component {
   render() {
     return (
       <div>
-        <Row>
-          <Label sm='2'>Select user: </Label>
-          <Col sm='4'>
-            <ReactSelect
-              options={this.state.users}
-              onInputChange={(value) => {
-                setTimeout(() => {
-                  this.getUsers({ $regex: JSON.stringify([{ "name": "name", "value": `.*${value}.*`, "$options": "$i" }]) });
-                }, 500);
-              }}
-              onChange={(value) => {
-                this.getUser(value._id);
-              }}
-            />
-          </Col>
-        </Row>
-        <hr />
+        {
+          Utils.showElementRole([ROLES.user]) &&
+          <Row>
+            <Label sm='2'>Select user: </Label>
+            <Col sm='4'>
+              <ReactSelect
+                options={this.state.users}
+                onInputChange={(value) => {
+                  setTimeout(() => {
+                    this.getUsers({ $regex: JSON.stringify([{ "name": "name", "value": `.*${value}.*`, "$options": "$i" }]) });
+                  }, 500);
+                }}
+                onChange={(value) => {
+                  this.getUser(value._id);
+                }}
+              />
+            </Col>
+          </Row>
+        }
+        {Utils.showElementRole([ROLES.user]) && <hr />}
         {
           Object.keys(this.state.user).length > 0 &&
           <Row>

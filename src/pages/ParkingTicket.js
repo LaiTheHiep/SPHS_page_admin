@@ -24,7 +24,7 @@ class ParkingTicket extends React.Component {
       parkingTickets: []
     };
 
-    if (Utils.getItemCookie('role') === ROLES.manager)
+    if (!Utils.showElementRole([ROLES.manager, ROLES.user]))
       this.getUsers({});
     else
       this.getCompanies({});
@@ -55,7 +55,7 @@ class ParkingTicket extends React.Component {
   }
 
   getUsers(_query) {
-    if (Utils.getItemCookie('role') === ROLES.manager)
+    if (!Utils.showElementRole([ROLES.manager, ROLES.user]))
       _query.companyId = Utils.getItemCookie('companyId');
     BaseAction.get(db_collection.users, { ..._query, ...this.state.filteredRegex }).then((res) => {
       this.state.users = [];
@@ -115,7 +115,7 @@ class ParkingTicket extends React.Component {
     return (
       <div>
         {
-          Utils.getItemCookie('role') !== ROLES.manager &&
+          Utils.showElementRole([ROLES.manager, ROLES.user]) &&
           <Row>
             <Label sm='2'>Select Company filter: </Label>
             <Col sm='4'>
@@ -146,7 +146,7 @@ class ParkingTicket extends React.Component {
             </Col>
           </Row>
         }
-        {Utils.getItemCookie('role') !== ROLES.manager && <hr />}
+        {Utils.showElementRole([ROLES.manager, ROLES.user]) && <hr />}
         <Row>
           <Col sm='3'>
             <Table

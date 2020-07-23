@@ -108,6 +108,12 @@ var Utils = {
       default:
         return ROLES;
     }
+  },
+  showElementRole(_arrRoleBlock) {
+    let _role = this.getItemCookie('role');
+    let _temp = _arrRoleBlock.find(e => e === _role);
+    if (_temp) return false;
+    else return true;
   }
 }
 
