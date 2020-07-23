@@ -1,7 +1,7 @@
 import XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import moment from 'moment';
-import { ADDRESS_BASE_API, EXPIRY_TOKEN } from './parameters/const_env';
+import { ADDRESS_BASE_API, EXPIRY_TOKEN, ROLES } from './parameters/const_env';
 
 var Utils = {
   downloadTemplate(data) {
@@ -93,6 +93,20 @@ var Utils = {
     if (_arr && _arr.length) {
       window.location.href = _href.substring(0, _href.indexOf(_arr[_arr.length - 1])) + _replaceLink;
       // window.location.reload();
+    }
+  },
+  selectRole() {
+    let _temp = ROLES;
+    switch (this.getItemCookie('role')) {
+      case ROLES.security:
+        delete _temp[ROLES.admin];
+        return _temp;
+      case ROLES.manager:
+        delete _temp[ROLES.admin];
+        delete _temp[ROLES.security];
+        return _temp;
+      default:
+        return ROLES;
     }
   }
 }

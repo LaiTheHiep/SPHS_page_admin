@@ -2,6 +2,7 @@
 import React from 'react';
 import Table from '../components/Table';
 import TextFilterer from '../components/Table/Filterer/TextFilterer';
+import SelectFilterer from '../components/Table/Filterer/SelectFilterer';
 import { Row, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import CIcon from '@coreui/icons-react';
 import ReactSelect from 'react-select';
@@ -206,6 +207,15 @@ class User extends React.Component {
   }
 
   render() {
+    const options = [{ value: 'all', name: 'all', key: 'all' }]
+
+    Object.keys(ROLES).forEach(item => {
+      options.push({
+        value: ROLES[item],
+        name: ROLES[item],
+        key: ROLES[item]
+      })
+    })
     const columns = [
       {
         Header: 'STT',
@@ -240,6 +250,20 @@ class User extends React.Component {
             convertString={(value1) => ({ $regex: `.*${value1}.*` })}
           />
         )
+      },
+      {
+        Header: 'Role',
+        accessor: 'role',
+        Filter: ({ filter, onChange }) => {
+          return (
+            <SelectFilterer
+              filter={filter}
+              onChange={onChange}
+              options={options}
+              defaultValue="all"
+            />
+          )
+        }
       },
       {
         Header: 'Number Plate',
@@ -292,8 +316,12 @@ class User extends React.Component {
               this.state.filteredRegex = {};
               var _regex_arr = [];
               valueState.filtered.forEach((e, i) => {
-                if (e.value)
-                  _regex_arr.push({ "name": e.id, "value": `.*${e.value['$valueTmp']}.*`, "$options": "$i" });
+                if (e.value) {
+                  if (e.value['$valueTmp'])
+                    _regex_arr.push({ "name": e.id, "value": `.*${e.value['$valueTmp']}.*`, "$options": "$i" });
+                  else
+                    _regex_arr.push({ "name": e.id, "value": `.*${e.value}.*`, "$options": "$i" });
+                }
               })
               this.setState({
                 pageSize: valueState.pageSize,
@@ -392,7 +420,7 @@ class User extends React.Component {
                 <td>
                   <Input type='select' name='role' value={this.state.valueTemp.role} onChange={this.changeText} >
                     {
-                      Object.keys(ROLES).map((e, i) => <option key={e}>{e}</option>)
+                      Object.keys(Utils.selectRole()).map((e, i) => <option key={e}>{e}</option>)
                     }
                   </Input>
                 </td>
