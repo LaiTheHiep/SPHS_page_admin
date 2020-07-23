@@ -1,3 +1,5 @@
+import { ROLES } from '../parameters/const_env';
+
 export default [
   {
     _tag: 'CSidebarNavItem',
@@ -15,28 +17,28 @@ export default [
     name: 'Role',
     to: '/role',
     icon: 'cil-puzzle',
-    block: ['security', 'manage', 'user']
+    block: [ROLES.security, ROLES.manager, ROLES.user]
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Vehicle Type',
     to: '/vehicle-type',
     icon: 'cil-drop',
-    block: ['security', 'manage', 'user']
+    block: [ROLES.security, ROLES.manager, ROLES.user]
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'User',
     to: '/user',
     icon: 'cil-user',
-    block: ['user']
+    block: [ROLES.user]
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Company',
     to: '/company',
     icon: 'cil-align-center',
-    block: ['manage', 'user']
+    block: [ROLES.manager, ROLES.user]
   },
   {
     _tag: 'CSidebarNavItem',

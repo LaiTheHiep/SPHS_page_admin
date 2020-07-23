@@ -1,4 +1,5 @@
 import React from 'react';
+import { ROLES } from './parameters/const_env';
 
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
 const Login = React.lazy(() => import('./pages/Login'));
@@ -14,11 +15,11 @@ const routes = [
   { path: '/', exact: true, name: 'Home', block: [] },
   { path: '/dashboard', name: 'Dashboard', component: Dashboard, block: [] },
   { path: '/login', name: 'Login', component: Login, block: [] },
-  { path: '/company', name: 'Company', component: Company, block: ['manage', 'user'] },
-  { path: '/role', name: 'Role', component: Role, block: ['security', 'manage', 'user'] },
+  { path: '/company', name: 'Company', component: Company, block: [ROLES.manager, ROLES.user] },
+  { path: '/role', name: 'Role', component: Role, block: [ROLES.security, ROLES.manager, ROLES.user] },
   { path: '/transaction', name: 'Transaction', component: Transaction, block: [] },
-  { path: '/user', name: 'User', component: User, block: ['user'] },
-  { path: '/vehicle-type', name: 'Vehicle Type', component: VehicleType, block: ['security', 'manage', 'user'] },
+  { path: '/user', name: 'User', component: User, block: [ROLES.user] },
+  { path: '/vehicle-type', name: 'Vehicle Type', component: VehicleType, block: [ROLES.security, ROLES.manager, ROLES.user] },
   { path: '/parking-ticket', name: 'Parking Ticket', component: ParkingTicket, block: [] },
 ];
 
