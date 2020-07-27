@@ -4,7 +4,8 @@ export const db_collection = {
   transactions: 'transactions',
   companies: 'companies',
   packingTickets: 'parkingtickets',
-  vehicleTypes: 'vehicletypes'
+  vehicleTypes: 'vehicletypes',
+  feedBacks: 'feedbacks'
 };
 export const LINK_SPECIALS = {
   authentication: 'authentication',

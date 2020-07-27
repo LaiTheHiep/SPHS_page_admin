@@ -53,6 +53,13 @@ export default [
     to: '/parking-ticket',
     icon: 'cil-cursor',
     block: []
+  },
+  {
+    _tag: 'CSidebarNavItem',
+    name: 'Feed Back',
+    to: '/feed-back',
+    icon: 'cil-speech',
+    block: []
   }
 ]
 
