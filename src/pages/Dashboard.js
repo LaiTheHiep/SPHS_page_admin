@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { Button } from 'reactstrap';
+import React from 'react';
 
 class Dashboard extends React.Component {
   constructor(props) {
