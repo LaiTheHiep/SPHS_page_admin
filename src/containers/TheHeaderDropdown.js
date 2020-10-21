@@ -15,25 +15,34 @@ import ReactSelect from 'react-select';
 import Utils from '../Utils';
 import BaseAction from '../actions/BaseAction';
 import { db_collection, VEHICLETYPES, SELECT_PARAMETERS } from '../parameters/const_env';
+import QRCode from 'qrcode.react';
 
 class TheHeaderDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      qrCode: false,
       isUpdate: false,
       isShowInformation: false,
       isRecharge: false,
       user: {},
       companies: [],
+      qrCode: {},
 
     }
 
     this.getCompany({});
 
+    this.toggleQRCode = this.toggleQRCode.bind(this);
     this.toggleUpdate = this.toggleUpdate.bind(this);
     this.toggleShowInformation = this.toggleShowInformation.bind(this);
     this.toggleRecharge = this.toggleRecharge.bind(this);
     this.changeText = this.changeText.bind(this);
+  }
+
+  toggleQRCode() {
+    this.state.qrCode = !this.state.qrCode;
+    this.setState({});
   }
 
   toggleUpdate() {
@@ -139,6 +148,12 @@ class TheHeaderDropdown extends React.Component {
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
           <CDropdownItem onClick={() => {
+            this.toggleQRCode();
+          }}>
+            <CIcon name="cil-code" className="mfe-2" />
+            QR Code
+          </CDropdownItem>
+          <CDropdownItem onClick={() => {
             this.state.isShowInformation = !this.state.isShowInformation;
             this.state.user.balance = Utils.getItemCookie('balance');
             this.getCookie();
@@ -165,6 +180,25 @@ class TheHeaderDropdown extends React.Component {
           Logout
         </CDropdownItem>
         </CDropdownMenu>
+        <Modal isOpen={this.state.qrCode} toggle={this.toggleQRCode}>
+          <ModalHeader toggle={this.toggleQRCode}>QR Code</ModalHeader>
+          <ModalBody>
+            <div className='text-center'>
+              <QRCode
+                value={JSON.stringify({
+                  account: Utils.getItemCookie('account'),
+                  companyId: Utils.getItemCookie('companyId'),
+                  role: Utils.getItemCookie('role'),
+                  numberPlate: Utils.getItemCookie('numberPlate'),
+                  _id: Utils.getItemCookie('_id')
+                })}
+                size={300}
+                level='H'
+                includeMargin={true}
+              />
+            </div>
+          </ModalBody>
+        </Modal>
         <Modal isOpen={this.state.isUpdate} toggle={this.toggleUpdate} size='lg'>
           <ModalHeader>Edit Profile</ModalHeader>
           <ModalBody>
