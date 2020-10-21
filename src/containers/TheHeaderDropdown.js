@@ -27,7 +27,7 @@ class TheHeaderDropdown extends React.Component {
       isRecharge: false,
       user: {},
       companies: [],
-      qrCode: {},
+      qrCodeValue:{}
 
     }
 
@@ -148,6 +148,14 @@ class TheHeaderDropdown extends React.Component {
         </CDropdownToggle>
         <CDropdownMenu className="pt-0" placement="bottom-end">
           <CDropdownItem onClick={() => {
+            this.state.qrCodeValue = JSON.stringify({
+              account: Utils.getItemCookie('account'),
+              companyId: Utils.getItemCookie('companyId'),
+              role: Utils.getItemCookie('role'),
+              numberPlate: Utils.getItemCookie('numberPlate'),
+              _id: Utils.getItemCookie('_id'),
+              createdTime: Date.now()
+            })
             this.toggleQRCode();
           }}>
             <CIcon name="cil-code" className="mfe-2" />
@@ -185,13 +193,7 @@ class TheHeaderDropdown extends React.Component {
           <ModalBody>
             <div className='text-center'>
               <QRCode
-                value={JSON.stringify({
-                  account: Utils.getItemCookie('account'),
-                  companyId: Utils.getItemCookie('companyId'),
-                  role: Utils.getItemCookie('role'),
-                  numberPlate: Utils.getItemCookie('numberPlate'),
-                  _id: Utils.getItemCookie('_id')
-                })}
+                value={this.state.qrCodeValue}
                 size={300}
                 level='H'
                 includeMargin={true}
