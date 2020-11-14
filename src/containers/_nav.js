@@ -56,10 +56,17 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Device',
+    to: '/device',
+    icon: 'cil-spreadsheet',
+    block: [ROLES.security, ROLES.manager, ROLES.user]
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Feed Back',
     to: '/feed-back',
     icon: 'cil-speech',
     block: []
-  }
+  },
 ]
 

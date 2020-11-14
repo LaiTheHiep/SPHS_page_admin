@@ -3,14 +3,14 @@ import React from 'react';
 import Table from '../components/Table';
 import TextFilterer from '../components/Table/Filterer/TextFilterer';
 import SelectFilterer from '../components/Table/Filterer/SelectFilterer';
-import { Row, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Row, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, Label } from 'reactstrap';
 import CIcon from '@coreui/icons-react';
 import ReactSelect from 'react-select';
 import { VEHICLETYPES, ROLES, SELECT_PARAMETERS, db_collection } from '../parameters/const_env';
 import BaseAction from '../actions/BaseAction';
 import Utils from '../Utils';
 
-class User extends React.Component {
+class Device extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class User extends React.Component {
     };
 
     this.get({ $limit: this.state.pageSize });
-    this.getCompany({});
+    // this.getCompany({});
 
     this.toggle = this.toggle.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
@@ -36,7 +36,7 @@ class User extends React.Component {
   }
 
   getTotal(_query) {
-    BaseAction.getTotal(db_collection.users, { ..._query, ...this.state.filteredRegex }).then((res) => {
+    BaseAction.getTotal(db_collection.devices, { ..._query, ...this.state.filteredRegex }).then((res) => {
       if (res.data.total) {
         this.state.total = res.data.total;
         this.state.pages = Utils.getPage(res.data.total, this.state.pageSize);
@@ -60,24 +60,23 @@ class User extends React.Component {
   }
 
   get(_query) {
-    if (!Utils.showElementRole([ROLES.manager]))
-      _query.companyId = Utils.getItemCookie('companyId');
-    BaseAction.get(db_collection.users, { ..._query, ...this.state.filteredRegex })
-      .then((res) => {
-        if (res.data.errorMessage) {
-          alert('Something wrong!');
-          return;
-        }
-        if (res.data.data) {
-          this.state.data = res.data.data;
-          this.setState({});
-        }
-      });
+    if (!Utils.showElementRole([ROLES.admin]))
+      BaseAction.get(db_collection.devices, { ..._query, ...this.state.filteredRegex })
+        .then((res) => {
+          if (res.data.errorMessage) {
+            alert('Something wrong!');
+            return;
+          }
+          if (res.data.data) {
+            this.state.data = res.data.data;
+            this.setState({});
+          }
+        });
     this.getTotal({});
   }
 
   post(_body) {
-    BaseAction.post(db_collection.users, _body)
+    BaseAction.post(db_collection.devices, _body)
       .then((res) => {
         if (res.data.errorMessage) {
           alert(`${res.data.errorName}: ${res.data.errorMessage}`);
@@ -92,7 +91,7 @@ class User extends React.Component {
   }
 
   put(_body) {
-    BaseAction.put(db_collection.users, _body)
+    BaseAction.put(db_collection.devices, _body)
       .then((res) => {
         if (res.data.errorMessage) {
           alert(`${res.data.errorName}: ${res.data.errorMessage}`);
@@ -112,7 +111,7 @@ class User extends React.Component {
       return;
 
     if (id) {
-      BaseAction.delete(db_collection.users, id)
+      BaseAction.delete(db_collection.devices, id)
         .then((res) => {
           if (res.data.errorMessage) {
             alert(`${res.data.errorName}: ${res.data.errorMessage}`);
@@ -165,45 +164,20 @@ class User extends React.Component {
 
   changeText(event) {
     switch (event.target.name) {
-      case 'account':
-        this.state.valueTemp.account = event.target.value;
-        break;
-      case 'password':
-        this.state.valueTemp.password = event.target.value;
-        break;
       case 'name':
         this.state.valueTemp.name = event.target.value;
-        break;
-      case 'cmt':
-        this.state.valueTemp.cmt = event.target.value;
-        break;
-      case 'phone':
-        this.state.valueTemp.phone = event.target.value;
-        break;
-      case 'email':
-        this.state.valueTemp.email = event.target.value;
-        break;
-      case 'numberPlate':
-        this.state.valueTemp.numberPlate = event.target.value;
-        break;
-      case 'vehicleColor':
-        this.state.valueTemp.vehicleColor = event.target.value;
-        break;
-      case 'vehicleBranch':
-        this.state.valueTemp.vehicleBranch = event.target.value;
-        break;
-      case 'vehicleType':
-        this.state.valueTemp.vehicleType = event.target.value;
-        break;
-      case 'role':
-        this.state.valueTemp.role = event.target.value;
         break;
       case 'description':
         this.state.valueTemp.description = event.target.value;
         break;
+      case 'cardIds':
+        // try {
+        //   this.state.valueTemp.cardIds = JSON.parse(event.target.value);
+        // }
+        // catch { }
+        break;
       default:
         break;
-
     }
     this.setState({});
   }
@@ -242,34 +216,22 @@ class User extends React.Component {
         )
       },
       {
-        Header: 'Account',
-        accessor: 'account',
-        Filter: ({ filter, onChange }) => (
-          <TextFilterer
-            filter={filter}
-            onChange={onChange}
-            defaultValue=""
-            convertString={(value1) => ({ $regex: `.*${value1}.*` })}
-          />
-        )
-      },
-      {
-        Header: 'Role',
-        accessor: 'role',
+        Header: 'Company Id',
+        accessor: 'companyId',
         Filter: ({ filter, onChange }) => {
           return (
-            <SelectFilterer
+            <TextFilterer
               filter={filter}
               onChange={onChange}
-              options={options}
-              defaultValue="all"
+              defaultValue=""
+              convertString={(value1) => ({ $regex: `.*${value1}.*` })}
             />
           )
         }
       },
       {
-        Header: 'Number Plate',
-        accessor: 'numberPlate',
+        Header: 'Description',
+        accessor: 'description',
         Filter: ({ filter, onChange }) => (
           <TextFilterer
             filter={filter}
@@ -278,11 +240,6 @@ class User extends React.Component {
             convertString={(value1) => ({ $regex: `.*${value1}.*` })}
           />
         )
-      },
-      {
-        Header: 'Description',
-        accessor: 'description',
-        filterable: false,
       },
       {
         Header: 'Option',
@@ -301,7 +258,7 @@ class User extends React.Component {
     return (
       <div>
         <Row>
-          <Button color='success' onClick={this.toggleCreate}>+ Create new user</Button>
+          <Button color='success' onClick={this.toggleCreate}>+ Create new device</Button>
         </Row>
         <br />
         <Row>
@@ -334,29 +291,16 @@ class User extends React.Component {
           />
         </Row>
         <Modal isOpen={this.state.isOpen} toggle={this.isOpen} size='lg'>
-          <ModalHeader>{this.state.typeSubmit === 1 ? 'Create new user' : 'Edit item'}</ModalHeader>
+          <ModalHeader>{this.state.typeSubmit === 1 ? 'Create new device' : 'Edit item'}</ModalHeader>
           <ModalBody>
             <table style={{ width: '100%' }}>
               <tr>
-                <td>Account</td>
-                <td>
-                  <Input name='account' value={this.state.valueTemp.account} autoComplete='off' onChange={this.changeText} />
-                </td>
-                <td>&ensp;</td>
-                <td>Password</td>
-                <td>
-                  <Input type='password' name='password' value={this.state.valueTemp.password} autoComplete='off' onChange={this.changeText} />
-                </td>
-              </tr>
-              <br />
-              <tr>
-                <td>Name</td>
-                <td>
+                <td style={{ width: '15%' }}>Name</td>
+                <td style={{ width: '35%' }}>
                   <Input name='name' value={this.state.valueTemp.name} autoComplete='off' onChange={this.changeText} />
                 </td>
-                <td>&ensp;</td>
-                <td>Company</td>
-                <td>
+                <td style={{ width: '15%', textAlign: 'center' }}>Company</td>
+                <td style={{ width: '35%' }}>
                   <ReactSelect
                     options={this.state.companies}
                     onInputChange={(value) => {
@@ -373,64 +317,14 @@ class User extends React.Component {
               </tr>
               <br />
               <tr>
-                <td>CMT</td>
-                <td>
-                  <Input name='cmt' value={this.state.valueTemp.cmt} autoComplete='off' onChange={this.changeText} />
-                </td>
-                <td>&ensp;</td>
-                <td>Phone</td>
-                <td>
-                  <Input name='phone' value={this.state.valueTemp.phone} autoComplete='off' onChange={this.changeText} />
-                </td>
-              </tr>
-              <br />
-              <tr>
-                <td>Email</td>
-                <td>
-                  <Input name='email' value={this.state.valueTemp.email} autoComplete='off' onChange={this.changeText} />
-                </td>
-                <td>&ensp;</td>
-                <td>Number Plate</td>
-                <td>
-                  <Input name='numberPlate' value={this.state.valueTemp.numberPlate} autoComplete='off' onChange={this.changeText} />
-                </td>
-              </tr>
-              <br />
-              <tr>
-                <td>Vehicle Color</td>
-                <td>
-                  <Input name='vehicleColor' value={this.state.valueTemp.vehicleColor} autoComplete='off' onChange={this.changeText} />
-                </td>
-                <td>&ensp;</td>
-                <td>Vehicle Branch</td>
-                <td>
-                  <Input name='vehicleBranch' value={this.state.valueTemp.vehicleBranch} autoComplete='off' onChange={this.changeText} />
-                </td>
-              </tr>
-              <br />
-              <tr>
-                <td>Vehicle Type</td>
-                <td>
-                  <Input type='select' name='vehicleType' value={this.state.valueTemp.vehicleType} onChange={this.changeText} >
-                    {
-                      Object.keys(VEHICLETYPES).map((e, i) => <option key={e}>{e}</option>)
-                    }
-                  </Input>
-                </td>
-                <td>&ensp;</td>
-                <td>Role</td>
-                <td>
-                  <Input type='select' name='role' value={this.state.valueTemp.role} onChange={this.changeText} >
-                    {
-                      Object.keys(Utils.selectRole()).map((e, i) => <option key={e}>{e}</option>)
-                    }
-                  </Input>
-                </td>
-              </tr>
-              <tr>
                 <td>Description</td>
                 <td>
                   <Input type='textarea' name='description' value={this.state.valueTemp.description} autoComplete='off' onChange={this.changeText} />
+                </td>
+                <td style={{ width: '15%', textAlign: 'center' }}>Card Ids</td>
+                <td>
+                  {/* <Input type='text' name='cardIds' value={this.state.valueTemp.cardIds && JSON.stringify(this.state.valueTemp.cardIds)} autoComplete='off' onChange={this.changeText} /> */}
+                  <Label>{this.state.valueTemp.cardIds && JSON.stringify(this.state.valueTemp.cardIds)}</Label>
                 </td>
               </tr>
             </table>
@@ -447,4 +341,4 @@ class User extends React.Component {
   }
 }
 
-export default User;
+export default Device;

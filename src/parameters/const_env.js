@@ -5,7 +5,9 @@ export const db_collection = {
   companies: 'companies',
   packingTickets: 'parkingtickets',
   vehicleTypes: 'vehicletypes',
-  feedBacks: 'feedbacks'
+  feedBacks: 'feedbacks',
+  devices: 'devices',
+  cards: 'cards'
 };
 export const LINK_SPECIALS = {
   authentication: 'authentication',
