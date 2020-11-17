@@ -132,6 +132,15 @@ class Device extends React.Component {
     if (!conf)
       return;
 
+    // validate json array cardIds
+    var textCardIds = document.getElementById("textCardIds").value;
+    if(textCardIds.length > 0){
+      this.state.valueTemp.cardIds = Utils.convertStringListToArray(textCardIds);
+    }
+    else{
+      this.state.valueTemp.cardIds = [];
+    }
+
     if (this.state.typeSubmit === 1) {
       this.post(this.state.valueTemp); // create new item
       return;
@@ -323,8 +332,8 @@ class Device extends React.Component {
                 </td>
                 <td style={{ width: '15%', textAlign: 'center' }}>Card Ids</td>
                 <td>
-                  {/* <Input type='text' name='cardIds' value={this.state.valueTemp.cardIds && JSON.stringify(this.state.valueTemp.cardIds)} autoComplete='off' onChange={this.changeText} /> */}
-                  <Label>{this.state.valueTemp.cardIds && JSON.stringify(this.state.valueTemp.cardIds)}</Label>
+                  <Input type='text' name='cardIds' id="textCardIds" defaultValue={this.state.valueTemp.cardIds && Utils.convertArrayToStringList(this.state.valueTemp.cardIds)} autoComplete='off' />
+                  {/* <Label>{this.state.valueTemp.cardIds && JSON.stringify(this.state.valueTemp.cardIds)}</Label> */}
                 </td>
               </tr>
             </table>
