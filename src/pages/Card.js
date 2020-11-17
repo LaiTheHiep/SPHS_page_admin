@@ -80,11 +80,22 @@ class CardPage extends React.Component {
 
   createCardInDevice() {
     var nameCard = prompt("Please enter your card Id", Date.now());
-    if(nameCard == null) return;
+    if (nameCard == null) return;
     if (this.state.device._id) {
       if (!this.state.device.cardIds) this.state.device.cardIds = [];
       this.state.device.cardIds.push(`${nameCard}`);
       this.setState({});
+      BaseAction.post(db_collection.cards, { name: nameCard, deviceId: this.state.device._id })
+        .then((data) => {
+          if (data) {
+            BaseAction.put(db_collection.devices, {
+              _id: this.state.device._id,
+              cardIds: this.state.device.cardIds
+            }).then((res) => {
+              alert('Create new OK');
+            });
+          }
+        });
       return;
     }
     alert('You must to select Device');
@@ -96,6 +107,17 @@ class CardPage extends React.Component {
       var cardNew = Date.now();
       this.state.device.cardIds.push(`${cardNew}`);
       this.setState({});
+      BaseAction.post(db_collection.cards, { name: cardNew, deviceId: this.state.device._id })
+        .then((data) => {
+          if (data) {
+            BaseAction.put(db_collection.devices, {
+              _id: this.state.device._id,
+              cardIds: this.state.device.cardIds
+            }).then((res) => {
+              alert('Create new OK');
+            });
+          }
+        });
       return;
     }
     alert('You must to select Device');
@@ -104,6 +126,24 @@ class CardPage extends React.Component {
   deleteCardInDevice(nameCard) {
     this.state.listCards = this.state.listCards.filter(e => e != nameCard);
     this.state.device.cardIds = this.state.device.cardIds.filter(e => e != nameCard);
+    BaseAction.get(db_collection.cards, { name: nameCard }).then((resCard) => {
+      if (!resCard.data.total) {
+        return;
+      }
+      var id = resCard.data.data[0]._id;
+      BaseAction.delete(db_collection.cards, id)
+        .then((data) => {
+          if (data) {
+            BaseAction.put(db_collection.devices, {
+              _id: this.state.device._id,
+              cardIds: this.state.device.cardIds
+            }).then((res) => {
+              alert('Remove card success');
+            });
+          }
+        });
+    })
+
     this.setState({});
   }
 
@@ -199,6 +239,7 @@ class CardPage extends React.Component {
                 <Button onClick={this.createRandomCard}>Create Random Card</Button>
               </Col>
             </Row>
+            <br />
             {
               this.state.listCards.map((e, i) => <div key={i}>
                 <Card>
