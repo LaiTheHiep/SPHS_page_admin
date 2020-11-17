@@ -114,6 +114,28 @@ var Utils = {
     let _temp = _arrRoleBlock.find(e => e === _role);
     if (_temp) return false;
     else return true;
+  },
+  convertArrayToStringList(_array) {
+    try {
+      var text = JSON.stringify(_array);
+      text = text.substr(1, text.length - 2);
+      text = text.replace(/"/g, "");
+      text = text.replace(/'/g, "");
+      return text;
+    }
+    catch{
+      return '';
+    }
+  },
+  convertStringListToArray(_stringList){
+    var items = _stringList.split(',');
+    var text = '';
+    items.forEach(e => {
+      text += `"${e.trim()}",`;
+    });
+    text = text.substr(0, text.length - 1);
+
+    return JSON.parse(`[${text}]`);
   }
 }
 
