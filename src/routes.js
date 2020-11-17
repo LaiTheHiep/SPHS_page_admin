@@ -11,6 +11,7 @@ const VehicleType = React.lazy(() => import('./pages/VehicleType'));
 const ParkingTicket = React.lazy(() => import('./pages/ParkingTicket'));
 const FeedBack = React.lazy(() => import('./pages/FeedBack'));
 const Device = React.lazy(() => import('./pages/Device'));
+const Card = React.lazy(() => import('./pages/Card'));
 
 
 const routes = [
@@ -24,7 +25,8 @@ const routes = [
   { path: '/vehicle-type', name: 'Vehicle Type', component: VehicleType, block: [ROLES.security, ROLES.manager, ROLES.user] },
   { path: '/parking-ticket', name: 'Parking Ticket', component: ParkingTicket, block: [] },
   { path: '/feed-back', name: 'Feed Back', component: FeedBack, block: [] },
-  { path: '/device', name: 'Device', component: Device, block: [ROLES.security, ROLES.manager, ROLES.user] }
+  { path: '/device', name: 'Device', component: Device, block: [ROLES.security, ROLES.manager, ROLES.user] },
+  { path: '/card', name: 'Card', component: Card, block: [ROLES.security, ROLES.manager, ROLES.user] },
 ];
 
 export default routes;

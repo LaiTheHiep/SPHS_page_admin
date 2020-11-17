@@ -63,6 +63,13 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Card',
+    to: '/card',
+    icon: 'cil-layers',
+    block: [ROLES.security, ROLES.manager, ROLES.user]
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Feed Back',
     to: '/feed-back',
     icon: 'cil-speech',
