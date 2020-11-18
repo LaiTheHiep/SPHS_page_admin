@@ -15,6 +15,7 @@ class User extends React.Component {
     super(props);
     this.state = {
       isOpen: false,
+      isCard: false,
       typeSubmit: 0, // 0: none, 1 : create, 2: edit
       valueTemp: {}, // role
       data: [],
@@ -23,6 +24,7 @@ class User extends React.Component {
       total: 0,
       filteredRegex: {},
       companies: [],
+      devices: [],
     };
 
     this.get({ $limit: this.state.pageSize });
@@ -31,6 +33,7 @@ class User extends React.Component {
     this.toggle = this.toggle.bind(this);
     this.toggleCreate = this.toggleCreate.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
+    this.toggleCard = this.toggleCard.bind(this);
     this.submit = this.submit.bind(this);
     this.changeText = this.changeText.bind(this);
   }
@@ -149,17 +152,39 @@ class User extends React.Component {
     this.setState({});
   }
 
-  toggleEdit(role) {
+  toggleEdit(user) {
     this.state.isOpen = true;
     this.state.typeSubmit = 2;
-    this.state.valueTemp = role;
+    this.state.valueTemp = user;
+    this.setState({});
+  }
+
+  toggleCard(user) {
+    this.state.isCard = true;
+    this.state.valueTemp = user;
+    BaseAction.get(db_collection.devices, { companyId: user.companyId })
+      .then((res) => {
+        if (res.data.total) {
+          this.state.devices = [];
+          res.data.data.forEach((e, i) => {
+            this.state.devices.push({
+              value: e._id,
+              label: e.name,
+              _id: e._id
+            });
+          })
+          this.setState({});
+        }
+      })
     this.setState({});
   }
 
   toggle() {
     this.state.isOpen = false;
+    this.state.isCard = false;
     this.state.typeSubmit = 0;
     this.state.valueTemp = {};
+    this.state.devices = [];
     this.setState({});
   }
 
@@ -287,10 +312,11 @@ class User extends React.Component {
       {
         Header: 'Option',
         id: 'option',
-        width: 100,
+        width: 150,
         filterable: false,
         Cell: (row) => {
           return <div>
+            <Button color='link' onClick={() => this.toggleCard(row.original)}><CIcon name="cil-layers" /></Button>
             <Button color='link' onClick={() => this.toggleEdit(row.original)}><CIcon name="cil-pencil" /></Button>
             <Button color='link' onClick={() => this.delete(row.original._id)}><CIcon name="cil-trash" /></Button>
           </div>
@@ -439,6 +465,36 @@ class User extends React.Component {
           <ModalFooter>
             <div className='text-right'>
               <Button color='success' onClick={this.submit}>{this.state.typeSubmit === 1 ? 'Create' : 'Edit'}</Button>&emsp;
+              <Button color='secondary' onClick={this.toggle}>Cancel</Button>
+            </div>
+          </ModalFooter>
+        </Modal>
+        <Modal isOpen={this.state.isCard} toggle={this.isCard} size='lg'>
+          <ModalHeader>Manage card with device</ModalHeader>
+          <ModalBody>
+            <Row>
+              <table style={{ width: '100%' }}>
+                <tr>
+                  <td style={{ width: '5%' }}></td>
+                  <td style={{ width: '40%' }}>You can select device in company: </td>
+                  <td style={{ width: '50%' }}>
+                    <ReactSelect
+                      options={this.state.devices}
+                      onChange={(value) => {
+                        console.log(value)
+                      }}
+                    />
+                  </td>
+                  <td style={{ width: '5%' }}></td>
+                </tr>
+              </table>
+            </Row>
+            <Row>
+              <Input type='time' />
+            </Row>
+          </ModalBody>
+          <ModalFooter>
+            <div className='text-right'>
               <Button color='secondary' onClick={this.toggle}>Cancel</Button>
             </div>
           </ModalFooter>
