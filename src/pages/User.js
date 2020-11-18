@@ -3,7 +3,7 @@ import React from 'react';
 import Table from '../components/Table';
 import TextFilterer from '../components/Table/Filterer/TextFilterer';
 import SelectFilterer from '../components/Table/Filterer/SelectFilterer';
-import { Row, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Row, Col, Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import CIcon from '@coreui/icons-react';
 import ReactSelect from 'react-select';
 import { VEHICLETYPES, ROLES, SELECT_PARAMETERS, db_collection } from '../parameters/const_env';
@@ -24,7 +24,9 @@ class User extends React.Component {
       total: 0,
       filteredRegex: {},
       companies: [],
+      device: {},
       devices: [],
+      dayOfWeek: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     };
 
     this.get({ $limit: this.state.pageSize });
@@ -185,6 +187,7 @@ class User extends React.Component {
     this.state.typeSubmit = 0;
     this.state.valueTemp = {};
     this.state.devices = [];
+    this.state.device = {};
     this.setState({});
   }
 
@@ -481,7 +484,20 @@ class User extends React.Component {
                     <ReactSelect
                       options={this.state.devices}
                       onChange={(value) => {
-                        console.log(value)
+                        this.state.device = this.state.devices.find(e => e._id === value._id);
+                        if (this.state.device._id && this.state.valueTemp.devicesAccess && this.state.valueTemp.devicesAccess[this.state.device._id]) {
+                          this.state.valueTemp.devicesAccess[this.state.device._id].forEach((e, i) => {
+                            Utils.convertDateTimeInput(`fromDate${i}`, e.dateTimeFrom);
+                            Utils.convertDateTimeInput(`toDate${i}`, e.dateTimeTo);
+                          });
+                        }
+                        else {
+                          this.state.dayOfWeek.forEach((e, i) => {
+                            Utils.convertDateTimeInput(`fromDate${i}`, '');
+                            Utils.convertDateTimeInput(`toDate${i}`, '');
+                          });
+                        }
+                        this.setState({});
                       }}
                     />
                   </td>
@@ -489,8 +505,78 @@ class User extends React.Component {
                 </tr>
               </table>
             </Row>
+            <br />
             <Row>
-              <Input type='time' />
+              <Col>
+                <table style={{ width: '100%' }}>
+                  {
+                    this.state.dayOfWeek.map((e, i) =>
+                      <tr key={i}>
+                        <td>{e}</td>
+                        <td>From:</td>
+                        <td>
+                          <Input type='time' id={`fromDate${i}`} />
+                        </td>
+                        <td>&emsp;</td>
+                        <td>To:</td>
+                        <td>
+                          <Input type='time' id={`toDate${i}`} />
+                        </td>
+                      </tr>)
+                  }
+                  <tr></tr>
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>
+                      <Button color='info' onClick={() => {
+                        if (this.state.device._id) {
+                          if (!this.state.valueTemp.devicesAccess) this.state.valueTemp.devicesAccess = {};
+                          if (!this.state.valueTemp.devicesAccess[this.state.device._id]) this.state.valueTemp.devicesAccess[this.state.device._id] = [];
+                          this.state.valueTemp.devicesAccess[this.state.device._id] = [];
+                          for (let i = 0; i < 7; i++) {
+                            this.state.valueTemp.devicesAccess[this.state.device._id].push({
+                              dateTimeFrom: Utils.convertDateTimeAccess(document.getElementById(`fromDate${i}`).value, true),
+                              dateTimeTo: Utils.convertDateTimeAccess(document.getElementById(`toDate${i}`).value, false)
+                            });
+                          }
+                          BaseAction.put(db_collection.users, this.state.valueTemp)
+                            .then(res => {
+                              if (res.data.errorMessage) {
+                                alert('Something wrong!');
+                              }
+                              else {
+                                alert('OK');
+                                this.setState({});
+                              }
+                            });
+                        }
+                      }}>Confirm Access Device</Button>{' '}
+                      {
+                        this.state.device && this.state.valueTemp.devicesAccess && this.state.valueTemp.devicesAccess[this.state.device._id] &&
+                        <Button color='danger' onClick={() => {
+                          var devicesAccess = this.state.valueTemp.devicesAccess;
+                          delete devicesAccess[this.state.device._id]
+                          this.state.valueTemp.devicesAccess = devicesAccess;
+                          BaseAction.put(db_collection.users, this.state.valueTemp)
+                            .then(res => {
+                              if (res.data.errorMessage) {
+                                alert('Something wrong!');
+                              }
+                              else {
+                                alert('OK');
+                                this.setState({});
+                              }
+                            });
+                        }}>Delete Access Device</Button>
+                      }
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </table>
+              </Col>
             </Row>
           </ModalBody>
           <ModalFooter>

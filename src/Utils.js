@@ -123,11 +123,11 @@ var Utils = {
       text = text.replace(/'/g, "");
       return text;
     }
-    catch{
+    catch {
       return '';
     }
   },
-  convertStringListToArray(_stringList){
+  convertStringListToArray(_stringList) {
     var items = _stringList.split(',');
     var text = '';
     items.forEach(e => {
@@ -136,6 +136,20 @@ var Utils = {
     text = text.substr(0, text.length - 1);
 
     return JSON.parse(`[${text}]`);
+  },
+  convertDateTimeAccess(date, isFrom) {
+    if (date) {
+      var dates = date.split(':');
+      return isFrom ? `${dates[0]}/${dates[1]}/00` : `${dates[0]}/${dates[1]}/59`;
+    }
+
+    return isFrom ? `00/00/00` : `23/59/59`;
+  },
+  // elementId
+  // date: hh/mm/ss
+  convertDateTimeInput(elementId, date) {
+    var dates = date.split('/');
+    document.getElementById(elementId).value = `${dates[0]}:${dates[1]}`;
   }
 }
 
