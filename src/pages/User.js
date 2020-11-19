@@ -138,6 +138,15 @@ class User extends React.Component {
     if (!conf)
       return;
 
+    // validate json array cardIds
+    var textCardIds = document.getElementById("textCardIds").value;
+    if (textCardIds.length > 0) {
+      this.state.valueTemp.cardIds = Utils.convertStringListToArray(textCardIds);
+    }
+    else {
+      this.state.valueTemp.cardIds = [];
+    }
+
     if (this.state.typeSubmit === 1) {
       this.post(this.state.valueTemp); // create new item
       return;
@@ -460,6 +469,11 @@ class User extends React.Component {
                 <td>Description</td>
                 <td>
                   <Input type='textarea' name='description' value={this.state.valueTemp.description} autoComplete='off' onChange={this.changeText} />
+                </td>
+                <td>&ensp;</td>
+                <td>Card Ids</td>
+                <td>
+                  <Input type='text' name='cardIds' id="textCardIds" defaultValue={this.state.valueTemp.cardIds && Utils.convertArrayToStringList(this.state.valueTemp.cardIds)} autoComplete='off' />
                 </td>
               </tr>
             </table>
