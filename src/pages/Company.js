@@ -163,6 +163,12 @@ class Company extends React.Component {
           })
         }
         break;
+      case 'timeStart':
+        this.state.valueTemp.timeStart = event.target.value;
+        break;
+      case 'timeEnd':
+        this.state.valueTemp.timeEnd = event.target.value;
+        break;
       default:
         break;
     }
@@ -294,6 +300,27 @@ class Company extends React.Component {
                       name='description' value={this.state.valueTemp.description}
                       type='textarea'
                       autoComplete='off'
+                      onChange={this.changeText}
+                    />
+                  </td>
+                </tr>
+                <tr>
+                  <td>Time Start:</td>
+                  <td>
+                    <Input
+                      type='time'
+                      id='timeStart' name='timeStart'
+                      value={this.state.valueTemp.timeStart}
+                      onChange={this.changeText}
+                    />
+                  </td>
+                  <td></td>
+                  <td>Time End:</td>
+                  <td>
+                    <Input
+                      type='time'
+                      id='timeEnd' name='timeEnd'
+                      value={this.state.valueTemp.timeEnd}
                       onChange={this.changeText}
                     />
                   </td>

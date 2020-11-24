@@ -13,6 +13,7 @@ export const LINK_SPECIALS = {
   authentication: 'authentication',
   loginFacebook: 'login-facebook',
   register: 'register',
+  workDay: 'work-days'
 };
 // export const ADDRESS_BASE_API = 'http://localhost:8080';
 export const ADDRESS_BASE_API = 'https://sphs-lth.herokuapp.com';

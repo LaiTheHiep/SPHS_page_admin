@@ -42,6 +42,13 @@ export default [
   },
   {
     _tag: 'CSidebarNavItem',
+    name: 'Work Day',
+    to: '/work-day',
+    icon: 'cil-align-center',
+    block: [ROLES.security, ROLES.user]
+  },
+  {
+    _tag: 'CSidebarNavItem',
     name: 'Transaction',
     to: '/transaction',
     icon: 'cil-credit-card',
