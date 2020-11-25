@@ -66,14 +66,14 @@ export default [
     name: 'Device',
     to: '/device',
     icon: 'cil-spreadsheet',
-    block: [ROLES.security, ROLES.manager, ROLES.user]
+    block: [ROLES.security, ROLES.user]
   },
   {
     _tag: 'CSidebarNavItem',
     name: 'Card',
     to: '/card',
     icon: 'cil-layers',
-    block: [ROLES.security, ROLES.manager, ROLES.user]
+    block: [ROLES.security, ROLES.user]
   },
   {
     _tag: 'CSidebarNavItem',

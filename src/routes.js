@@ -27,8 +27,8 @@ const routes = [
   { path: '/vehicle-type', name: 'Vehicle Type', component: VehicleType, block: [ROLES.security, ROLES.manager, ROLES.user] },
   { path: '/parking-ticket', name: 'Parking Ticket', component: ParkingTicket, block: [] },
   { path: '/feed-back', name: 'Feed Back', component: FeedBack, block: [] },
-  { path: '/device', name: 'Device', component: Device, block: [ROLES.security, ROLES.manager, ROLES.user] },
-  { path: '/card', name: 'Card', component: Card, block: [ROLES.security, ROLES.manager, ROLES.user] },
+  { path: '/device', name: 'Device', component: Device, block: [ROLES.security, ROLES.user] },
+  { path: '/card', name: 'Card', component: Card, block: [ROLES.security, ROLES.user] },
 ];
 
 export default routes;

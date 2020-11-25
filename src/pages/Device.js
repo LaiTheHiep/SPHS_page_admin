@@ -36,6 +36,8 @@ class Device extends React.Component {
   }
 
   getTotal(_query) {
+    if (Utils.getItemCookie('role') === ROLES.manager)
+      _query['companyId'] = Utils.getItemCookie('companyId');
     BaseAction.getTotal(db_collection.devices, { ..._query, ...this.state.filteredRegex }).then((res) => {
       if (res.data.total) {
         this.state.total = res.data.total;
@@ -46,6 +48,8 @@ class Device extends React.Component {
   }
 
   getCompany(_query) {
+    if (Utils.getItemCookie('role') === ROLES.manager)
+      _query['_id'] = Utils.getItemCookie('companyId');
     BaseAction.get(db_collection.companies, { $skip: SELECT_PARAMETERS.skip, $limit: SELECT_PARAMETERS.limit, ..._query }).then((res) => {
       this.state.companies = [];
       res.data.data.forEach((e, i) => {
@@ -60,18 +64,19 @@ class Device extends React.Component {
   }
 
   get(_query) {
-    if (!Utils.showElementRole([ROLES.admin]))
-      BaseAction.get(db_collection.devices, { ..._query, ...this.state.filteredRegex })
-        .then((res) => {
-          if (res.data.errorMessage) {
-            alert('Something wrong!');
-            return;
-          }
-          if (res.data.data) {
-            this.state.data = res.data.data;
-            this.setState({});
-          }
-        });
+    if (Utils.getItemCookie('role') === ROLES.manager)
+      _query['companyId'] = Utils.getItemCookie('companyId');
+    BaseAction.get(db_collection.devices, { ..._query, ...this.state.filteredRegex })
+      .then((res) => {
+        if (res.data.errorMessage) {
+          alert('Something wrong!');
+          return;
+        }
+        if (res.data.data) {
+          this.state.data = res.data.data;
+          this.setState({});
+        }
+      });
     this.getTotal({});
   }
 
@@ -134,10 +139,10 @@ class Device extends React.Component {
 
     // validate json array cardIds
     var textCardIds = document.getElementById("textCardIds").value;
-    if(textCardIds.length > 0){
+    if (textCardIds.length > 0) {
       this.state.valueTemp.cardIds = Utils.convertStringListToArray(textCardIds);
     }
-    else{
+    else {
       this.state.valueTemp.cardIds = [];
     }
 
