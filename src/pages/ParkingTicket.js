@@ -81,7 +81,8 @@ class ParkingTicket extends React.Component {
         res.data.data.forEach((e, i) => {
           let _user_temp = resUsers.data.data.find(_e => _e._id === e.author);
           if (_user_temp) {
-            this.state.parkingTickets.push({ ...e, security: _user_temp.name });
+            var headerImage = 'data:image/(.*?);base64,';
+            this.state.parkingTickets.push({ ...e, imageIn: `${headerImage}${e.imageIn}`, imageOut: `${headerImage}${e.imageOut}`, security: _user_temp.name });
           } else {
             this.state.parkingTickets.push(e);
           }
