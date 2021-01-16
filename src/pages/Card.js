@@ -73,9 +73,16 @@ class CardPage extends React.Component {
   }
 
   getListCards(device) {
-    this.state.listCards = device.cardIds;
-    this.state.device = device;
-    this.setState({});
+    this.state.listCards = [];
+    BaseAction.get(db_collection.cards, { deviceId: device._id }).then((res) => {
+      if (res.data.data) {
+        res.data.data.map((e, i) => {
+          this.state.listCards.push(e.name)
+        });
+        this.state.device = device;
+        this.setState({});
+      }
+    })
   }
 
   createCardInDevice() {
@@ -92,7 +99,7 @@ class CardPage extends React.Component {
               _id: this.state.device._id,
               cardIds: this.state.device.cardIds
             }).then((res) => {
-              alert('Create new OK');
+              // alert('Create new OK');
             });
           }
         });
@@ -114,7 +121,7 @@ class CardPage extends React.Component {
               _id: this.state.device._id,
               cardIds: this.state.device.cardIds
             }).then((res) => {
-              alert('Create new OK');
+              // alert('Create new OK');
             });
           }
         });
