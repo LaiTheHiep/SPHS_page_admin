@@ -117,13 +117,10 @@ class CardPage extends React.Component {
       BaseAction.post(db_collection.cards, { name: cardNew, deviceId: this.state.device._id })
         .then((data) => {
           if (data) {
-            console.log(this.state.device)
-            console.log(this.state.listCards)
             BaseAction.put(db_collection.devices, {
               _id: this.state.device._id,
               cardIds: this.state.listCards
             }).then((res) => {
-              console.log(res)
               // alert('Create new OK');
             });
           }
