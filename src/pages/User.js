@@ -147,6 +147,10 @@ class User extends React.Component {
       this.state.valueTemp.cardIds = [];
     }
 
+    // check vehicle type
+    if(!this.state.valueTemp.vehicleType)
+      this.state.valueTemp.vehicleType = VEHICLETYPES.car;
+
     if (this.state.typeSubmit === 1) {
       this.post(this.state.valueTemp); // create new item
       return;
