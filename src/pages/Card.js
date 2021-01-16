@@ -89,15 +89,15 @@ class CardPage extends React.Component {
     var nameCard = prompt("Please enter your card Id", Date.now());
     if (nameCard == null) return;
     if (this.state.device._id) {
-      if (!this.state.device.cardIds) this.state.device.cardIds = [];
-      this.state.device.cardIds.push(`${nameCard}`);
+      if (!this.state.listCards) this.state.listCards = [];
+      this.state.listCards.push(`${nameCard}`);
       this.setState({});
       BaseAction.post(db_collection.cards, { name: nameCard, deviceId: this.state.device._id })
         .then((data) => {
           if (data) {
             BaseAction.put(db_collection.devices, {
               _id: this.state.device._id,
-              cardIds: this.state.device.cardIds
+              cardIds: this.state.listCards
             }).then((res) => {
               // alert('Create new OK');
             });
@@ -110,17 +110,20 @@ class CardPage extends React.Component {
 
   createRandomCard() {
     if (this.state.device._id) {
-      if (!this.state.device.cardIds) this.state.device.cardIds = [];
+      if (!this.state.listCards) this.state.listCards = [];
       var cardNew = Date.now();
-      this.state.device.cardIds.push(`${cardNew}`);
+      this.state.listCards.push(`${cardNew}`);
       this.setState({});
       BaseAction.post(db_collection.cards, { name: cardNew, deviceId: this.state.device._id })
         .then((data) => {
           if (data) {
+            console.log(this.state.device)
+            console.log(this.state.listCards)
             BaseAction.put(db_collection.devices, {
               _id: this.state.device._id,
-              cardIds: this.state.device.cardIds
+              cardIds: this.state.listCards
             }).then((res) => {
+              console.log(res)
               // alert('Create new OK');
             });
           }
@@ -132,7 +135,6 @@ class CardPage extends React.Component {
 
   deleteCardInDevice(nameCard) {
     this.state.listCards = this.state.listCards.filter(e => e != nameCard);
-    this.state.device.cardIds = this.state.device.cardIds.filter(e => e != nameCard);
     BaseAction.get(db_collection.cards, { name: nameCard }).then((resCard) => {
       if (!resCard.data.total) {
         return;
@@ -143,9 +145,9 @@ class CardPage extends React.Component {
           if (data) {
             BaseAction.put(db_collection.devices, {
               _id: this.state.device._id,
-              cardIds: this.state.device.cardIds
+              cardIds: this.state.listCards
             }).then((res) => {
-              alert('Remove card success');
+              // alert('Remove card success');
             });
           }
         });
