@@ -73,16 +73,23 @@ class CardPage extends React.Component {
   }
 
   getListCards(device) {
-    this.state.listCards = [];
-    BaseAction.get(db_collection.cards, { deviceId: device._id }).then((res) => {
-      if (res.data.data) {
-        res.data.data.map((e, i) => {
-          this.state.listCards.push(e.name)
-        });
-        this.state.device = device;
-        this.setState({});
-      }
-    })
+    // this.state.listCards = [];
+    // BaseAction.get(db_collection.cards, { deviceId: device._id }).then((res) => {
+    //   if (res.data.data) {
+    //     res.data.data.map((e, i) => {
+    //       this.state.listCards.push(e.name)
+    //     });
+    //     this.state.device = device;
+    //     this.setState({});
+    //   }
+    // })
+    this.state.device = device;
+    if (this.state.device && this.state.device.cardIds)
+      this.state.listCards = this.state.device.cardIds;
+    else
+      this.state.listCards = [];
+
+    this.setState({});
   }
 
   createCardInDevice() {
@@ -95,12 +102,18 @@ class CardPage extends React.Component {
       BaseAction.post(db_collection.cards, { name: nameCard, deviceId: this.state.device._id })
         .then((data) => {
           if (data) {
-            BaseAction.put(db_collection.devices, {
-              _id: this.state.device._id,
-              cardIds: this.state.listCards
-            }).then((res) => {
-              // alert('Create new OK');
-            });
+            this.state.devices.map((e, i) => {
+              if (this.state.device.companyId === e.companyId) {
+                BaseAction.put(db_collection.devices, {
+                  _id: e._id,
+                  cardIds: this.state.listCards
+                }).then((res) => {
+                  // alert('Create new OK');
+                  e.cardIds = this.state.listCards;
+                  this.setState({});
+                });
+              }
+            })
           }
         });
       return;
@@ -117,12 +130,18 @@ class CardPage extends React.Component {
       BaseAction.post(db_collection.cards, { name: cardNew, deviceId: this.state.device._id })
         .then((data) => {
           if (data) {
-            BaseAction.put(db_collection.devices, {
-              _id: this.state.device._id,
-              cardIds: this.state.listCards
-            }).then((res) => {
-              // alert('Create new OK');
-            });
+            this.state.devices.map((e, i) => {
+              if (this.state.device.companyId === e.companyId) {
+                BaseAction.put(db_collection.devices, {
+                  _id: e._id,
+                  cardIds: this.state.listCards
+                }).then((res) => {
+                  // alert('Create new OK');
+                  e.cardIds = this.state.listCards;
+                  this.setState({});
+                });
+              }
+            })
           }
         });
       return;
@@ -140,12 +159,18 @@ class CardPage extends React.Component {
       BaseAction.delete(db_collection.cards, id)
         .then((data) => {
           if (data) {
-            BaseAction.put(db_collection.devices, {
-              _id: this.state.device._id,
-              cardIds: this.state.listCards
-            }).then((res) => {
-              // alert('Remove card success');
-            });
+            this.state.devices.map((e, i) => {
+              if (this.state.device.companyId === e.companyId) {
+                BaseAction.put(db_collection.devices, {
+                  _id: e._id,
+                  cardIds: this.state.listCards
+                }).then((res) => {
+                  // alert('Create new OK');
+                  e.cardIds = this.state.listCards;
+                  this.setState({});
+                });
+              }
+            })
           }
         });
     })
@@ -223,7 +248,7 @@ class CardPage extends React.Component {
               pageSizeOptions={[5, 10, 25, 50, 75, 100]}
               defaultPageSize={this.state.pageSize}
               onFetchData={(valueState) => {
-                if (valueState.filtered[0]) {
+                if (valueState.filtered[0] && valueState.filtered[0].value) {
                   this.state.filteredRegex = { $regex: JSON.stringify([{ "name": "name", "value": `.*${valueState.filtered[0].value['$valueTmp']}.*`, "$options": "$i" }]) };
                 } else {
                   this.state.filteredRegex = {};
